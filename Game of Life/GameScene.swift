@@ -10,55 +10,55 @@ import SpriteKit
 
 class GameScene: SKScene {
 
-	let _gridWidth = 400
-	let _gridHeight = 300
-	let _numRows = 8
-	let _numCols = 10
-	let _gridLowerLeftCorner = CGPoint(x: 158, y: 10)
+	let gridWidth = 400
+	let gridHeight = 300
+	let numRows = 8
+	let numCols = 10
+	let gridLowerLeftCorner = CGPoint(x: 158, y: 10)
 
-	let _populationLabel = SKLabelNode(text: "Population")
-	let _generationLabel = SKLabelNode(text: "Generation")
-	var _populationValueLabel = SKLabelNode(text: "0")
-	var _generationValueLabel = SKLabelNode(text: "0")
-	var _playButton = SKSpriteNode(imageNamed: "play.png")
-	var _pauseButton = SKSpriteNode(imageNamed: "pause.png")
+	let populationLabel = SKLabelNode(text: "Population")
+	let generationLabel = SKLabelNode(text: "Generation")
+	var populationValueLabel = SKLabelNode(text: "0")
+	var generationValueLabel = SKLabelNode(text: "0")
+	var playButton = SKSpriteNode(imageNamed: "play.png")
+	var pauseButton = SKSpriteNode(imageNamed: "pause.png")
 
-	var _tiles:[[Tile]] = []
-	var _margin = 4
+	var tiles:[[Tile]] = []
+	var margin = 4
 
-	var _isPlaying = false
+	var isPlaying = false
 
-	var _prevTime:CFTimeInterval = 0
-	var _timeCounter:CFTimeInterval = 0
+	var prevTime:CFTimeInterval = 0
+	var timeCounter:CFTimeInterval = 0
 
-	var _population:Int = 0 {
+	var population:Int = 0 {
 		didSet {
-			_populationValueLabel.text = "\(_population)"
+			populationValueLabel.text = "\(population)"
 		}
 	}
-	var _generation:Int = 0 {
+	var generation:Int = 0 {
 		didSet {
-			_generationValueLabel.text = "\(_generation)"
+			generationValueLabel.text = "\(generation)"
 		}
 	}
 
 	func playButtonPressed() {
-		_isPlaying = true
+		isPlaying = true
 	}
 	func pauseButtonPressed() {
-		_isPlaying = false
+		isPlaying = false
 	}
 
 	func calculateTileSize() -> CGSize {
-		let tileWidth = _gridWidth / _numCols - _margin
-		let tileHeight = _gridHeight / _numRows - _margin
+		let tileWidth = gridWidth / numCols - margin
+		let tileHeight = gridHeight / numRows - margin
 		return CGSize(width: tileWidth, height: tileHeight)
 	}
 
 	func getTilePosition(row r:Int, column c:Int) -> CGPoint {
 		let tileSize = calculateTileSize()
-		let x = Int(_gridLowerLeftCorner.x) + _margin + (c * (Int(tileSize.width) + _margin))
-		let y = Int(_gridLowerLeftCorner.y) + _margin + (r * (Int(tileSize.height) + _margin))
+		let x = Int(gridLowerLeftCorner.x) + margin + (c * (Int(tileSize.width) + margin))
+		let y = Int(gridLowerLeftCorner.y) + margin + (r * (Int(tileSize.height) + margin))
 		return CGPoint(x: x, y: y)
 	}
 
@@ -71,18 +71,18 @@ class GameScene: SKScene {
 		self.addChild(background)
 
 		let gridBackground = SKSpriteNode(imageNamed: "grid.png")
-		gridBackground.size = CGSize(width: _gridWidth, height: _gridHeight)
+		gridBackground.size = CGSize(width: gridWidth, height: gridHeight)
 		gridBackground.zPosition = -1
 		gridBackground.anchorPoint = CGPoint.zeroPoint
-		gridBackground.position = _gridLowerLeftCorner
+		gridBackground.position = gridLowerLeftCorner
 		self.addChild(gridBackground)
 
-		_playButton.position = CGPoint(x: 79, y: 290)
-		_playButton.setScale(0.5)
-		self.addChild(_playButton)
-		_pauseButton.position = CGPoint(x: 79, y: 250)
-		_pauseButton.setScale(0.5)
-		self.addChild(_pauseButton)
+		playButton.position = CGPoint(x: 79, y: 290)
+		playButton.setScale(0.5)
+		self.addChild(playButton)
+		pauseButton.position = CGPoint(x: 79, y: 250)
+		pauseButton.setScale(0.5)
+		self.addChild(pauseButton)
 
 		// Add a balloon background for the stats
 		let balloon = SKSpriteNode(imageNamed: "balloon.png")
@@ -98,32 +98,32 @@ class GameScene: SKScene {
 
 		// dark green labels to keep track of number of living tiles
 		// and number of steps the simulation has gone through
-		_populationLabel.position = CGPoint(x: 79, y: 190)
-		_populationLabel.fontName = "Courier"
-		_populationLabel.fontSize = 12
-		_populationLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
-		self.addChild(_populationLabel)
-		_generationLabel.position = CGPoint(x: 79, y: 160)
-		_generationLabel.fontName = "Courier"
-		_generationLabel.fontSize = 12
-		_generationLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
-		self.addChild(_generationLabel)
-		_populationValueLabel.position = CGPoint(x: 79, y: 175)
-		_populationValueLabel.fontName = "Courier"
-		_populationValueLabel.fontSize = 12
-		_populationValueLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
-		self.addChild(_populationValueLabel)
-		_generationValueLabel.position = CGPoint(x: 79, y: 145)
-		_generationValueLabel.fontName = "Courier"
-		_generationValueLabel.fontSize = 12
-		_generationValueLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
-		self.addChild(_generationValueLabel)
+		populationLabel.position = CGPoint(x: 79, y: 190)
+		populationLabel.fontName = "Courier"
+		populationLabel.fontSize = 12
+		populationLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
+		self.addChild(populationLabel)
+		generationLabel.position = CGPoint(x: 79, y: 160)
+		generationLabel.fontName = "Courier"
+		generationLabel.fontSize = 12
+		generationLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
+		self.addChild(generationLabel)
+		populationValueLabel.position = CGPoint(x: 79, y: 175)
+		populationValueLabel.fontName = "Courier"
+		populationValueLabel.fontSize = 12
+		populationValueLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
+		self.addChild(populationValueLabel)
+		generationValueLabel.position = CGPoint(x: 79, y: 145)
+		generationValueLabel.fontName = "Courier"
+		generationValueLabel.fontSize = 12
+		generationValueLabel.fontColor = UIColor(red: 0, green: 0.2, blue: 0, alpha: 1)
+		self.addChild(generationValueLabel)
 
 		// Initialize the 2D array of tiles
 		let tileSize = calculateTileSize()
-		for r in 0..<_numRows {
+		for r in 0..<numRows {
 			var tileRow:[Tile] = []
-			for c in 0..<_numCols {
+			for c in 0..<numCols {
 				let tile = Tile(imageNamed: "bubble.png")
 				tile.isAlive = false
 				tile.size = CGSize(width: tileSize.width, height: tileSize.height)
@@ -132,19 +132,19 @@ class GameScene: SKScene {
 				self.addChild(tile)
 				tileRow.append(tile)
 			}
-			_tiles.append(tileRow)
+			tiles.append(tileRow)
 		}
     }
 
 	func isValidTile(row r:Int, column c:Int) -> Bool {
-		return r >= 0 && r < _numRows && c >= 0 && c < _numCols
+		return r >= 0 && r < numRows && c >= 0 && c < numCols
 	}
 
 	func getTileAtPosition(xPos x:Int, yPos y:Int) -> Tile? {
-		let r:Int = Int(CGFloat(y - (Int(_gridLowerLeftCorner.y) + _margin)) / CGFloat(_gridHeight) * CGFloat(_numRows))
-		let c:Int = Int( CGFloat(x - (Int(_gridLowerLeftCorner.x) + _margin)) / CGFloat(_gridWidth) * CGFloat(_numCols))
+		let r:Int = Int(CGFloat(y - (Int(gridLowerLeftCorner.y) + margin)) / CGFloat(gridHeight) * CGFloat(numRows))
+		let c:Int = Int( CGFloat(x - (Int(gridLowerLeftCorner.x) + margin)) / CGFloat(gridWidth) * CGFloat(numCols))
 		if isValidTile(row: r, column: c) {
-			return _tiles[r][c]
+			return tiles[r][c]
 		} else {
 			return nil
 		}
@@ -157,16 +157,16 @@ class GameScene: SKScene {
 			if let tile = selectedTile {
 				tile.isAlive = !tile.isAlive
 				if tile.isAlive {
-					_population++
+					population++
 				} else {
-					_population--
+					population--
 				}
 			}
 
-			if CGRectContainsPoint(_playButton.frame, touch.locationInNode(self)) {
+			if CGRectContainsPoint(playButton.frame, touch.locationInNode(self)) {
 				playButtonPressed()
 			}
-			if CGRectContainsPoint(_pauseButton.frame, touch.locationInNode(self)) {
+			if CGRectContainsPoint(pauseButton.frame, touch.locationInNode(self)) {
 				pauseButtonPressed()
 			}
 		}
@@ -175,49 +175,49 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-		if _prevTime == 0 {
-			_prevTime = currentTime
+		if prevTime == 0 {
+			prevTime = currentTime
 		}
-		if _isPlaying {
-			_timeCounter += currentTime - _prevTime
-			if _timeCounter > 0.5 {
-				_timeCounter = 0
+		if isPlaying {
+			timeCounter += currentTime - prevTime
+			if timeCounter > 0.5 {
+				timeCounter = 0
 				timeStep()
 			}
 		}
-		_prevTime = currentTime
+		prevTime = currentTime
     }
 
 	func timeStep() {
 		countLivingNeighbors()
 		updateCreatures()
-		_generation++
+		generation++
 	}
 
 	func countLivingNeighbors() {
-		for r in 0..<_numRows {
-			for c in 0..<_numCols {
+		for r in 0..<numRows {
+			for c in 0..<numCols {
 				var numLivingNeighbors = 0
 				for i in (r-1)...(r+1) {
 					for j in (c-1)...(c+1)
 					{
 						if ( !((r == i) && (c == j)) && isValidTile(row: i, column: j)) {
-							if _tiles[i][j].isAlive {
+							if tiles[i][j].isAlive {
 								numLivingNeighbors++
 							}
 						}
 					}
 				}
-				_tiles[r][c].numLivingNeighbors = numLivingNeighbors
+				tiles[r][c].numLivingNeighbors = numLivingNeighbors
 			}
 		}
 	}
 
 	func updateCreatures() {
 		var numAlive = 0
-		for r in 0..<_numRows {
-			for c in 0..<_numCols {
-				var tile:Tile = _tiles[r][c]
+		for r in 0..<numRows {
+			for c in 0..<numCols {
+				var tile:Tile = tiles[r][c]
 				if tile.numLivingNeighbors == 3 {
 					tile.isAlive = true
 				} else if tile.numLivingNeighbors < 2 || tile.numLivingNeighbors > 3 {
@@ -228,26 +228,6 @@ class GameScene: SKScene {
 				}
 			}
 		}
-		_population = numAlive
+		population = numAlive
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
